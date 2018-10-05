@@ -1,0 +1,8 @@
+CATEYES_PYTHON {
+  global:
+    PyInit__cateyes;
+    init_cateyes;
+
+  local:
+    *;
+};

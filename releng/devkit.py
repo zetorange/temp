@@ -1,0 +1,531 @@
+#!/usr/bin/env python3
+
+from __future__ import print_function
+import codecs
+from collections import OrderedDict
+from glob import glob
+import os
+import pipes
+import platform
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
+INCLUDE_PATTERN = re.compile("#include\s+[<\"](.*?)[>\"]")
+
+DEVKITS = {
+    "cateyes-gum": ("cateyes-gum-1.0", ("cateyes-1.0", "gum", "gum.h")),
+    "cateyes-gumjs": ("cateyes-gumjs-1.0", ("cateyes-1.0", "gumjs", "gumscriptbackend.h")),
+    "cateyes-core": ("cateyes-core-1.0", ("cateyes-1.0", "cateyes-core.h")),
+}
+
+# TODO: auto-detect these:
+MSVS_DIR = r"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community"
+WINDOWS_SDK_DIR = r"C:\Program Files (x86)\Windows Kits\10"
+
+def generate_devkit(kit, host, output_dir):
+    package, umbrella_header = DEVKITS[kit]
+
+    cateyes_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+    library_filename = compute_library_filename(kit)
+    (extra_ldflags, thirdparty_symbol_mappings) = generate_library(package, cateyes_root, host, output_dir, library_filename)
+
+    umbrella_header_path = compute_umbrella_header_path(cateyes_root, host, package, umbrella_header)
+
+    header_filename = kit + ".h"
+    if not os.path.exists(umbrella_header_path):
+        raise Exception("Header not found: {}".format(umbrella_header_path))
+    header = generate_header(package, cateyes_root, host, kit, umbrella_header_path, thirdparty_symbol_mappings)
+    with codecs.open(os.path.join(output_dir, header_filename), "w", 'utf-8') as f:
+        f.write(header)
+
+    example_filename = kit + "-example.c"
+    example = generate_example(example_filename, package, cateyes_root, host, kit, extra_ldflags)
+    with codecs.open(os.path.join(output_dir, example_filename), "w", 'utf-8') as f:
+        f.write(example)
+
+    if platform.system() == 'Windows':
+        for msvs_asset in glob(asset_path("{}-*.sln".format(kit))) + glob(asset_path("{}-*.vcxproj*".format(kit))):
+            shutil.copy(msvs_asset, output_dir)
+
+    return [header_filename, library_filename, example_filename]
+
+def generate_header(package, cateyes_root, host, kit, umbrella_header_path, thirdparty_symbol_mappings):
+    if platform.system() == 'Windows':
+        include_dirs = [
+            MSVS_DIR + r"\VC\Tools\MSVC\14.14.26428\include",
+            WINDOWS_SDK_DIR + r"\Include\10.0.14393.0\ucrt",
+            os.path.join(cateyes_root, "build", "sdk-windows", msvs_arch_config(host), "lib", "glib-2.0", "include"),
+            os.path.join(cateyes_root, "build", "sdk-windows", msvs_arch_config(host), "include", "glib-2.0"),
+            os.path.join(cateyes_root, "build", "sdk-windows", msvs_arch_config(host), "include", "glib-2.0"),
+            os.path.join(cateyes_root, "build", "sdk-windows", msvs_arch_config(host), "include", "json-glib-1.0"),
+            os.path.join(cateyes_root, "capstone", "include"),
+            os.path.join(cateyes_root, "cateyes-gum"),
+            os.path.join(cateyes_root, "cateyes-gum", "bindings")
+        ]
+        includes = ["/I" + include_dir for include_dir in include_dirs]
+
+        preprocessor = subprocess.Popen(
+            [msvs_cl_exe(host), "/nologo", "/E", umbrella_header_path] + includes,
+            cwd=msvs_runtime_path(host),
+            shell=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        stdout, stderr = preprocessor.communicate()
+        if preprocessor.returncode != 0:
+            raise Exception("Failed to spawn preprocessor: " + stderr.decode('utf-8'))
+        lines = stdout.decode('utf-8').split('\n')
+
+        mapping_prefix = "#line "
+        header_refs = [line[line.index("\"") + 1:line.rindex("\"")].replace("\\\\", "/") for line in lines if line.startswith(mapping_prefix)]
+
+        header_files = deduplicate(header_refs)
+        cateyes_root_slashed = cateyes_root.replace("\\", "/")
+        header_files = [header_file for header_file in header_files if bool(re.match('^' + cateyes_root_slashed, header_file, re.I))]
+    else:
+        rc = env_rc(cateyes_root, host)
+        header_dependencies = subprocess.check_output(
+            ["(. \"{rc}\" && $CPP $CFLAGS -M $($PKG_CONFIG --cflags {package}) \"{header}\")".format(rc=rc, package=package, header=umbrella_header_path)],
+            shell=True).decode('utf-8')
+        header_lines = header_dependencies.strip().split("\n")[1:]
+        header_files = [line.rstrip("\\").strip() for line in header_lines]
+        header_files = [header_file for header_file in header_files if header_file.startswith(cateyes_root)]
+
+    devkit_header_lines = []
+    umbrella_header = header_files[0]
+    processed_header_files = set([umbrella_header])
+    ingest_header(umbrella_header, header_files, processed_header_files, devkit_header_lines)
+    if kit == "cateyes-core" and host.startswith("android-"):
+        selinux_header = os.path.join(os.path.dirname(umbrella_header_path), "cateyes-selinux.h")
+        ingest_header(selinux_header, header_files, processed_header_files, devkit_header_lines)
+    devkit_header = u"".join(devkit_header_lines)
+
+    if package.startswith("cateyes-gum"):
+        config = """#ifndef GUM_STATIC
+# define GUM_STATIC
+#endif
+
+"""
+    else:
+        config = ""
+
+    if platform.system() == 'Windows':
+        deps = ["dnsapi", "iphlpapi", "psapi", "winmm", "ws2_32"]
+        if package == "cateyes-core-1.0":
+            deps.extend(["advapi32", "gdi32", "kernel32", "ole32", "shell32", "shlwapi", "user32"])
+        deps.sort()
+
+        cateyes_pragmas = "#pragma comment(lib, \"{}\")".format(compute_library_filename(kit))
+        dep_pragmas = "\n".join(["#pragma comment(lib, \"{}.lib\")".format(dep) for dep in deps])
+
+        config += cateyes_pragmas + "\n\n" + dep_pragmas + "\n\n"
+
+    if len(thirdparty_symbol_mappings) > 0:
+        public_mappings = []
+        for original, renamed in extract_public_thirdparty_symbol_mappings(thirdparty_symbol_mappings):
+            public_mappings.append((original, renamed))
+            if not "define {0}".format(original) in devkit_header:
+                continue
+            def fixup_macro(match):
+                prefix = match.group(1)
+                suffix = re.sub(r"\b{0}\b".format(original), renamed, match.group(2))
+                return "#undef {0}\n".format(original) + prefix + original + suffix
+            devkit_header = re.sub(r"^([ \t]*#[ \t]*define[ \t]*){0}\b((.*\\\n)*.*)$".format(original), fixup_macro, devkit_header, flags=re.MULTILINE)
+
+        config += "#ifndef __CATEYES_SYMBOL_MAPPINGS__\n"
+        config += "#define __CATEYES_SYMBOL_MAPPINGS__\n\n"
+        config += "\n".join(["#define {0} {1}".format(original, renamed) for original, renamed in public_mappings]) + "\n\n"
+        config += "#endif\n\n"
+
+    return config + devkit_header
+
+def ingest_header(header, all_header_files, processed_header_files, result):
+    with codecs.open(header, "r", 'utf-8') as f:
+        for line in f:
+            match = INCLUDE_PATTERN.match(line.strip())
+            if match is not None:
+                name = match.group(1)
+                inline = False
+                for other_header in all_header_files:
+                    if other_header.endswith("/" + name):
+                        inline = True
+                        if not other_header in processed_header_files:
+                            processed_header_files.add(other_header)
+                            ingest_header(other_header, all_header_files, processed_header_files, result)
+                        break
+                if not inline:
+                    result.append(line)
+            else:
+                result.append(line)
+
+def generate_library(package, cateyes_root, host, output_dir, library_filename):
+    if platform.system() == 'Windows':
+        return generate_library_windows(package, cateyes_root, host, output_dir, library_filename)
+    else:
+        return generate_library_unix(package, cateyes_root, host, output_dir, library_filename)
+
+def generate_library_windows(package, cateyes_root, host, output_dir, library_filename):
+    glib = [
+        sdk_lib_path("glib-2.0.lib", cateyes_root, host),
+        sdk_lib_path("intl.lib", cateyes_root, host),
+    ]
+    gobject = glib + [
+        sdk_lib_path("gobject-2.0.lib", cateyes_root, host),
+        sdk_lib_path("ffi.lib", cateyes_root, host),
+    ]
+    gmodule = glib + [
+        sdk_lib_path("gmodule-2.0.lib", cateyes_root, host),
+    ]
+    gio = glib + gobject + gmodule + [
+        sdk_lib_path("gio-2.0.lib", cateyes_root, host),
+        sdk_lib_path("z.lib", cateyes_root, host),
+    ]
+
+    json_glib = glib + gobject + [
+        sdk_lib_path("json-glib-1.0.lib", cateyes_root, host),
+    ]
+
+    gee = glib + gobject + [
+        sdk_lib_path("gee-0.8.lib", cateyes_root, host),
+    ]
+
+    v8 = [
+        sdk_lib_path("v8_base_0.lib", cateyes_root, host),
+        sdk_lib_path("v8_base_1.lib", cateyes_root, host),
+        sdk_lib_path("v8_base_2.lib", cateyes_root, host),
+        sdk_lib_path("v8_base_3.lib", cateyes_root, host),
+        sdk_lib_path("v8_libbase.lib", cateyes_root, host),
+        sdk_lib_path("v8_libplatform.lib", cateyes_root, host),
+        sdk_lib_path("v8_libsampler.lib", cateyes_root, host),
+        sdk_lib_path("v8_snapshot.lib", cateyes_root, host),
+    ]
+
+    gum_lib = internal_arch_lib_path("gum", cateyes_root, host)
+    gum_deps = deduplicate(glib + gobject + gio)
+    gumjs_deps = deduplicate([gum_lib] + gum_deps + json_glib + v8)
+    cateyes_core_deps = deduplicate(glib + gobject + gio + json_glib + gmodule + gee)
+
+    if package == "cateyes-gum-1.0":
+        package_lib_path = gum_lib
+        package_lib_deps = gum_deps
+    elif package == "cateyes-gumjs-1.0":
+        package_lib_path = internal_arch_lib_path("gumjs", cateyes_root, host)
+        package_lib_deps = gumjs_deps
+    elif package == "cateyes-core-1.0":
+        package_lib_path = internal_noarch_lib_path("cateyes-core", cateyes_root, host)
+        package_lib_deps = cateyes_core_deps
+    else:
+        raise Exception("Unhandled package")
+
+    input_libs = [package_lib_path] + package_lib_deps
+    input_pdbs = [os.path.splitext(input_lib)[0] + ".pdb" for input_lib in input_libs]
+    input_pdbs = [input_pdb for input_pdb in input_pdbs if os.path.exists(input_pdb)]
+
+    subprocess.check_output(
+        [msvs_lib_exe(host), "/nologo", "/out:" + os.path.join(output_dir, library_filename)] + input_libs,
+        cwd=msvs_runtime_path(host),
+        shell=False)
+
+    for pdb in input_pdbs:
+        shutil.copy(pdb, output_dir)
+
+    extra_flags = [os.path.basename(lib_path) for lib_path in input_libs]
+    thirdparty_symbol_mappings = []
+
+    return (extra_flags, thirdparty_symbol_mappings)
+
+def generate_library_unix(package, cateyes_root, host, output_dir, library_filename):
+    output_path = os.path.join(output_dir, library_filename)
+
+    try:
+        os.unlink(output_path)
+    except:
+        pass
+
+    rc = env_rc(cateyes_root, host)
+    ar = probe_env(rc, "echo $AR")
+
+    library_flags = subprocess.check_output(
+        ["(. \"{rc}\" && $PKG_CONFIG --static --libs {package})".format(rc=rc, package=package)],
+        shell=True).decode('utf-8').strip().split(" ")
+    library_dirs = infer_library_dirs(library_flags)
+    library_names = infer_library_names(library_flags)
+    library_paths, extra_flags = resolve_library_paths(library_names, library_dirs)
+    extra_flags += infer_linker_flags(library_flags)
+
+    ar_version = subprocess.Popen([ar, "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT).communicate()[0].decode('utf-8')
+    mri_supported = ar_version.startswith("GNU ar ")
+
+    if mri_supported:
+        mri = ["create " + output_path]
+        mri += ["addlib " + path for path in library_paths]
+        mri += ["save", "end"]
+        raw_mri = "\n".join(mri)
+        ar = subprocess.Popen([ar, "-M"], stdin=subprocess.PIPE)
+        ar.communicate(input=raw_mri.encode('utf-8'))
+        if ar.returncode != 0:
+            raise Exception("ar failed")
+    else:
+        combined_dir = tempfile.mkdtemp(prefix="devkit")
+        object_names = set()
+
+        for library_path in library_paths:
+            scratch_dir = tempfile.mkdtemp(prefix="devkit")
+
+            subprocess.check_output([ar, "x", library_path], cwd=scratch_dir)
+            for object_path in glob(os.path.join(scratch_dir, "*.o")):
+                object_name = os.path.basename(object_path)
+                while object_name in object_names:
+                    object_name = "_" + object_name
+                object_names.add(object_name)
+                shutil.move(object_path, os.path.join(combined_dir, object_name))
+
+            shutil.rmtree(scratch_dir)
+
+        subprocess.check_output([ar, "rcs", output_path] + list(object_names), cwd=combined_dir)
+
+        shutil.rmtree(combined_dir)
+
+    objcopy = probe_env(rc, "echo $OBJCOPY")
+    if len(objcopy) > 0:
+        thirdparty_symbol_mappings = get_thirdparty_symbol_mappings(output_path, rc)
+
+        renames = "\n".join(["{0} {1}".format(original, renamed) for original, renamed in thirdparty_symbol_mappings]) + "\n"
+        with tempfile.NamedTemporaryFile() as renames_file:
+            renames_file.write(renames.encode('utf-8'))
+            renames_file.flush()
+            subprocess.check_call([objcopy, "--redefine-syms=" + renames_file.name, output_path])
+    else:
+        thirdparty_symbol_mappings = []
+
+    return (extra_flags, thirdparty_symbol_mappings)
+
+def extract_public_thirdparty_symbol_mappings(mappings):
+    public_prefixes = ["g_", "glib_", "gobject_", "gio_", "gee_", "json_"]
+    return [(original, renamed) for original, renamed in mappings if any([original.startswith(prefix) for prefix in public_prefixes])]
+
+def get_thirdparty_symbol_mappings(library, rc):
+    return [(name, "_cateyes_" + name) for name in get_thirdparty_symbol_names(library, rc)]
+
+def get_thirdparty_symbol_names(library, rc):
+    visible_names = list(set([name for kind, name in get_symbols(library, rc) if kind in ('T', 'D', 'B', 'R', 'C')]))
+    visible_names.sort()
+
+    cateyes_prefixes = ["cateyes", "_cateyes", "gum", "_gum"]
+    thirdparty_names = [name for name in visible_names if not any([name.startswith(prefix) for prefix in cateyes_prefixes])]
+
+    return thirdparty_names
+
+def get_symbols(library, rc):
+    result = []
+
+    nm = probe_env(rc, "echo $NM")
+
+    for line in subprocess.check_output([nm, library]).decode('utf-8').split("\n"):
+        tokens = line.split(" ")
+        if len(tokens) < 3:
+            continue
+        (kind, name) = tokens[-2:]
+        result.append((kind, name))
+
+    return result
+
+def infer_library_dirs(flags):
+    return [flag[2:] for flag in flags if flag.startswith("-L")]
+
+def infer_library_names(flags):
+    return [flag[2:] for flag in flags if flag.startswith("-l")]
+
+def infer_linker_flags(flags):
+    return [flag for flag in flags if flag.startswith("-Wl")]
+
+def resolve_library_paths(names, dirs):
+    paths = []
+    flags = []
+    for name in names:
+        library_path = None
+        for d in dirs:
+            candidate = os.path.join(d, "lib{}.a".format(name))
+            if os.path.exists(candidate):
+                library_path = candidate
+                break
+        if library_path is not None:
+            paths.append(library_path)
+        else:
+            flags.append("-l{}".format(name))
+    return (deduplicate(paths), flags)
+
+def generate_example(filename, package, cateyes_root, host, kit, extra_ldflags):
+    if platform.system() == 'Windows':
+        os_flavor = "windows"
+    else:
+        os_flavor = "unix"
+
+    example_filename = "{}-example-{}.c".format(kit, os_flavor)
+    with codecs.open(asset_path(example_filename), "rb", 'utf-8') as f:
+        example_code = f.read()
+
+    if platform.system() == 'Windows':
+        return example_code
+    else:
+        rc = env_rc(cateyes_root, host)
+
+        cc = probe_env(rc, "echo $CC")
+        cflags = probe_env(rc, "echo $CFLAGS")
+        ldflags = probe_env(rc, "echo $LDFLAGS")
+
+        (cflags, ldflags) = trim_flags(cflags, " ".join([" ".join(extra_ldflags), ldflags]))
+
+        params = {
+            "cc": cc,
+            "cflags": cflags,
+            "ldflags": ldflags,
+            "source_filename": filename,
+            "program_filename": os.path.splitext(filename)[0],
+            "library_name": kit
+        }
+
+        preamble = """\
+/*
+ * Compile with:
+ *
+ * %(cc)s %(cflags)s %(source_filename)s -o %(program_filename)s -L. -l%(library_name)s %(ldflags)s
+ *
+ * Visit www.cateyes.re to learn more about Cateyes.
+ */""" % params
+
+        return preamble + "\n\n" + example_code
+
+def asset_path(name):
+    return os.path.join(os.path.dirname(__file__), "devkit-assets", name)
+
+def env_rc(cateyes_root, host):
+    return os.path.join(cateyes_root, "build", "cateyes-env-{}.rc".format(host))
+
+def msvs_cl_exe(host):
+    return msvs_tool_path(host, "cl.exe")
+
+def msvs_lib_exe(host):
+    return msvs_tool_path(host, "lib.exe")
+
+def msvs_tool_path(host, tool):
+    if host == "windows-x86_64":
+        return MSVS_DIR + r"\VC\Tools\MSVC\14.14.26428\bin\HostX86\x64\{0}".format(tool)
+    else:
+        return MSVS_DIR + r"\VC\Tools\MSVC\14.14.26428\bin\HostX86\x86\{0}".format(tool)
+
+def msvs_runtime_path(host):
+    return MSVS_DIR + r"\VC\Tools\MSVC\14.14.26428\bin\HostX86\x86"
+
+def msvs_arch_config(host):
+    if host == "windows-x86_64":
+        return "x64-Release"
+    else:
+        return "Win32-Release"
+
+def msvs_arch_suffix(host):
+    if host == "windows-x86_64":
+        return "-64"
+    else:
+        return "-32"
+
+def compute_library_filename(kit):
+    if platform.system() == 'Windows':
+        return "{}.lib".format(kit)
+    else:
+        return "lib{}.a".format(kit)
+
+def compute_umbrella_header_path(cateyes_root, host, package, umbrella_header):
+    if platform.system() == 'Windows':
+        if package == "cateyes-gum-1.0":
+            return os.path.join(cateyes_root, "cateyes-gum", "gum", "gum.h")
+        elif package == "cateyes-gumjs-1.0":
+            return os.path.join(cateyes_root, "cateyes-gum", "bindings", "gumjs", umbrella_header[-1])
+        elif package == "cateyes-core-1.0":
+            return os.path.join(cateyes_root, "build", "tmp-windows", msvs_arch_config(host), "cateyes-core", "api", "cateyes-core.h")
+        else:
+            raise Exception("Unhandled package")
+    else:
+        return os.path.join(cateyes_root, "build", "cateyes-" + host, "include", *umbrella_header)
+
+def sdk_lib_path(name, cateyes_root, host):
+    return os.path.join(cateyes_root, "build", "sdk-windows", msvs_arch_config(host), "lib", name)
+
+def internal_noarch_lib_path(name, cateyes_root, host):
+    return os.path.join(cateyes_root, "build", "tmp-windows", msvs_arch_config(host), name, name + ".lib")
+
+def internal_arch_lib_path(name, cateyes_root, host):
+    lib_name = name + msvs_arch_suffix(host)
+    return os.path.join(cateyes_root, "build", "tmp-windows", msvs_arch_config(host), lib_name, lib_name + ".lib")
+
+def probe_env(rc, command):
+    return subprocess.check_output([
+        "(. \"{rc}\" && PACKAGE_TARNAME=cateyes-devkit . $CONFIG_SITE && {command})".format(rc=rc, command=command)
+    ], shell=True).decode('utf-8').strip()
+
+def trim_flags(cflags, ldflags):
+    trimmed_cflags = []
+    trimmed_ldflags = []
+
+    pending_cflags = cflags.split(" ")
+    while len(pending_cflags) > 0:
+        flag = pending_cflags.pop(0)
+        if flag == "-include":
+            pending_cflags.pop(0)
+        else:
+            trimmed_cflags.append(flag)
+
+    trimmed_cflags = deduplicate(trimmed_cflags)
+    existing_cflags = set(trimmed_cflags)
+
+    pending_ldflags = ldflags.split(" ")
+    while len(pending_ldflags) > 0:
+        flag = pending_ldflags.pop(0)
+        if flag in ("-arch", "-isysroot") and flag in existing_cflags:
+            pending_ldflags.pop(0)
+        else:
+            trimmed_ldflags.append(flag)
+
+    pending_ldflags = trimmed_ldflags
+    trimmed_ldflags = []
+    while len(pending_ldflags) > 0:
+        flag = pending_ldflags.pop(0)
+
+        raw_flags = []
+        while flag.startswith("-Wl,"):
+            raw_flags.append(flag[4:])
+            if len(pending_ldflags) > 0:
+                flag = pending_ldflags.pop(0)
+            else:
+                flag = None
+                break
+        if len(raw_flags) > 0:
+            trimmed_ldflags.append("-Wl," + ",".join(raw_flags))
+
+        if flag is not None and flag not in existing_cflags:
+            trimmed_ldflags.append(flag)
+
+    return (" ".join(trimmed_cflags), " ".join(trimmed_ldflags))
+
+def deduplicate(items):
+    return list(OrderedDict.fromkeys(items))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Usage: {0} kit host outdir".format(sys.argv[0]), file=sys.stderr)
+        sys.exit(1)
+
+    kit = sys.argv[1]
+    host = sys.argv[2]
+    outdir = os.path.abspath(sys.argv[3])
+
+    try:
+        os.makedirs(outdir)
+    except:
+        pass
+
+    generate_devkit(kit, host, outdir)

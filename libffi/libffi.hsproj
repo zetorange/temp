@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{90405D48-781D-4A0B-8C28-994DD47C1B8B}</ProjectGuid>
+    <OutputType>lib</OutputType>
+    <AssemblyName>ffi</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\HSBuild\HSBuild.C.Default.props" />
+
+  <PropertyGroup>
+    <VersionMajor>3</VersionMajor>
+    <VersionMinor>99999</VersionMinor>
+    <VersionMicro>0</VersionMicro>
+    <Version>$(VersionMajor).$(VersionMinor)</Version>
+
+    <DisableConfigHeaderGeneration>true</DisableConfigHeaderGeneration>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)'=='x86'">
+    <FFITarget>X86_WIN32</FFITarget>
+    <FFIGlue>win32</FFIGlue>
+    <FFIAsmTool>$(MSVCToolPath)ml.exe</FFIAsmTool>
+    <FFIAsmFlags>/Cx /safeseh</FFIAsmFlags>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x86_64'">
+    <FFITarget>X86_WIN64</FFITarget>
+    <FFIGlue>win64</FFIGlue>
+    <FFIAsmTool>$(MSVCToolPath)ml64.exe</FFIAsmTool>
+    <FFIAsmFlags>/Cx</FFIAsmFlags>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\HSBuild\HSBuild.C.props" />
+  <Import Project="$(MSBuildExtensionsPath)\HSBuild\Cateyes.props" />
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        %(AdditionalIncludeDirectories);
+        $(IntDir);
+        src/x86;
+        include;
+      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>
+        $(FFITarget);
+        FFI_EXPORTS;
+        %(PreprocessorDefinitions);
+      </PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)'=='Debug'">
+        FFI_DEBUG;
+        %(PreprocessorDefinitions);
+      </PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup>
+    <InstallInclude>
+      <SubDirectory>../lib/libffi-$(Version)/include</SubDirectory>
+    </InstallInclude>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition="'$(OutputType)'=='lib'">
+    <Lib>
+      <AdditionalLibOptions>$(IntDir)$(FFIGlue).obj;%(AdditionalLibOptions)</AdditionalLibOptions>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(OutputType)'=='dll'">
+    <Link>
+      <AdditionalDependencies>$(IntDir)$(FFIGlue).obj;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <InstallPkgConfig Include="libffi.pc.in">
+      <SubstitutionExpressions>
+        %(SubstitutionExpressions);
+        s/@PACKAGE_NAME@/lib$(AssemblyName)/g;
+        s/@PACKAGE_VERSION@/$(Version)/g;
+        s/@FFI_CFLAGS@/-DFFI_BUILDING=1/g;
+        s/@toolexeclibdir@/${libdir}/g;
+      </SubstitutionExpressions>
+    </InstallPkgConfig>
+
+    <InFile Include="fficonfig.h.win32.in">
+      <Expressions>s/@VERSION@/$(Version)/g;%(Expressions)</Expressions>
+      <OutputFileName>fficonfig.h</OutputFileName>
+    </InFile>
+    <InFile Include="include\ffi.h.in">
+      <Expressions>s/@VERSION@/$(Version)/g;
+s/@TARGET@/$(FFITarget)/g;
+s/@HAVE_LONG_DOUBLE@/0/g;
+s/@HAVE_LONG_DOUBLE_VARIANT@/0/g;
+s/@FFI_EXEC_TRAMPOLINE_TABLE@/0/g;
+%(Expressions)</Expressions>
+      <OutputFileName>ffi.h</OutputFileName>
+    </InFile>
+
+    <ClCompile Include="src\prep_cif.c" />
+    <ClCompile Include="src\types.c" />
+    <ClCompile Include="src\raw_api.c" />
+    <ClCompile Include="src\java_raw_api.c" />
+    <ClCompile Include="src\closures.c" />
+    <ClCompile Include="src\x86\ffi.c" />
+
+    <InstallInclude Include="$(IntDir)ffi.h" />
+    <InstallInclude Include="src\x86\ffitarget.h" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\HSBuild\HSBuild.C.targets" />
+
+  <Target Name="FFIAssemblyCompile">
+    <MakeDir Directories="$(IntDir)" />
+    <Error Condition=" '$(CC)' == ''" Text="Compiler not found. CC needed to preprocess assembler code." />
+    <Exec Command="&quot;$(CC)&quot; /EP /D$(FFITarget) /I&quot;$(IntDir)&quot; /Isrc\x86 /Iinclude src\x86\$(FFIGlue).S &gt; &quot;$(IntDir)$(FFIGlue).asm&quot;" />
+    <Exec Command="&quot;$(FFIAsmTool)&quot; $(FFIAsmFlags) /c /Fo &quot;$(IntDir)$(FFIGlue).obj&quot; &quot;$(IntDir)$(FFIGlue).asm&quot;" />
+  </Target>
+
+  <PropertyGroup>
+    <CCompileTargets>
+      $(CCompileTargets);
+      FFIAssemblyCompile
+    </CCompileTargets>
+  </PropertyGroup>
+</Project>
+

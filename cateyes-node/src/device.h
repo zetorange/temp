@@ -1,0 +1,53 @@
+#ifndef CATEYESNODE_DEVICE_H
+#define CATEYESNODE_DEVICE_H
+
+#include "glib_object.h"
+
+#include <cateyes-core.h>
+#include <nan.h>
+
+namespace cateyes {
+
+class Device : public GLibObject {
+ public:
+  static void Init(v8::Handle<v8::Object> exports, Runtime* runtime);
+  static v8::Local<v8::Object> New(gpointer handle, Runtime* runtime);
+
+ private:
+  Device(CateyesDevice* handle, Runtime* runtime);
+  ~Device();
+
+  static NAN_METHOD(New);
+
+  static NAN_PROPERTY_GETTER(GetId);
+  static NAN_PROPERTY_GETTER(GetName);
+  static NAN_PROPERTY_GETTER(GetIcon);
+  static NAN_PROPERTY_GETTER(GetType);
+
+  static NAN_METHOD(GetFrontmostApplication);
+  static NAN_METHOD(EnumerateApplications);
+  static NAN_METHOD(EnumerateProcesses);
+  static NAN_METHOD(EnableSpawnGating);
+  static NAN_METHOD(DisableSpawnGating);
+  static NAN_METHOD(EnumeratePendingSpawn);
+  static NAN_METHOD(EnumeratePendingChildren);
+  static NAN_METHOD(Spawn);
+  static NAN_METHOD(Input);
+  static NAN_METHOD(Resume);
+  static NAN_METHOD(Kill);
+  static NAN_METHOD(Attach);
+  static NAN_METHOD(InjectLibraryFile);
+  static NAN_METHOD(InjectLibraryBlob);
+
+  static v8::Local<v8::Value> TransformSignal(const gchar* name, guint index,
+      const GValue* value, gpointer user_data);
+  static void OnConnect(const gchar* signal, gpointer user_data);
+  static void OnDisconnect(const gchar* signal, gpointer user_data);
+  static bool ShouldStayAliveToEmit(const gchar* signal);
+
+  v8::Persistent<v8::Object> signals_;
+};
+
+}
+
+#endif

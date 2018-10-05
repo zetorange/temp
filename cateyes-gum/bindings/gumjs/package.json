@@ -1,0 +1,41 @@
+{
+  "name": "cateyes-gumjs",
+  "version": "1.0.0",
+  "description": "GumJS",
+  "private": true,
+  "main": "runtime/index.js",
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            [
+              "es2015",
+              {
+                "loose": true
+              }
+            ]
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "cateyes-compile": "^5.0.1",
+    "cateyes-java": "1.4.10",
+    "cateyes-objc": "2.0.6",
+    "promiscuous": "^0.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cateyes/cateyes-gum.git"
+  },
+  "author": "Cateyes Developers",
+  "license": "LGPL-2.0 WITH WxWindows-exception-3.1",
+  "bugs": {
+    "url": "https://github.com/cateyes/cateyes-gum/issues"
+  },
+  "homepage": "https://github.com/cateyes/cateyes-gum#readme"
+}

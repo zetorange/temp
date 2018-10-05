@@ -1,0 +1,4 @@
+module Cateyes
+plugin cateyes-qml
+classname Cateyes_QmlPlugin
+typeinfo cateyes-qml.qmltypes

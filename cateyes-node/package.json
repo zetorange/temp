@@ -1,0 +1,66 @@
+{
+  "name": "cateyes",
+  "version": "0.0.0",
+  "authors": [
+    "Cateyes Developers"
+  ],
+  "description": "Inject JavaScript to explore native apps on Windows, Mac, Linux, iOS and Android",
+  "keywords": [
+    "debugger",
+    "tracer",
+    "instrumentation",
+    "hooking",
+    "inject",
+    "windows",
+    "macos",
+    "linux",
+    "ios",
+    "iphone",
+    "ipad",
+    "android"
+  ],
+  "homepage": "https://www.cateyes.re",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "main": "./dist",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "bindings": "^1.2.1",
+    "minimatch": "^3.0.3",
+    "nan": "^2.4.0",
+    "prebuild-install": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.3",
+    "@types/node": "^10.3.6",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "prebuild": "^7.6.0",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "install": "prebuild-install || node-gyp rebuild",
+    "prebuild": "prebuild --verbose --strip",
+    "test": "npm run prebuild && node --expose-gc node_modules/mocha/bin/_mocha -r ts-node/register test/*.ts"
+  },
+  "binary": {
+    "host": "https://github.com",
+    "remote_path": "cateyes/cateyes/releases/download/{version}"
+  },
+  "license": "LGPL-2.0 WITH WxWindows-exception-3.1",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cateyes/cateyes-node.git"
+  },
+  "bugs": {
+    "url": "http://github.com/cateyes/cateyes-node/issues"
+  }
+}

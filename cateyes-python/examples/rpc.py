@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+
+import cateyes
+
+
+session = cateyes.attach("Twitter")
+script = session.create_script("""\
+'use strict';
+
+rpc.exports = {
+  hello: function () {
+    return 'Hello';
+  },
+  failPlease: function () {
+    oops;
+  }
+};
+""")
+script.load()
+api = script.exports
+print("api.hello() =>", api.hello())
+api.fail_please()

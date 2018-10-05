@@ -1,0 +1,30 @@
+{
+  "name": "cateyes-gadget-ios",
+  "version": "0.0.0",
+  "description": "Gadget for iOS",
+  "main": "index.js",
+  "scripts": {
+    "install": "node download.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cateyes/cateyes.git"
+  },
+  "keywords": [
+    "instrumentation",
+    "hooking",
+    "ios"
+  ],
+  "author": "Cateyes Developers",
+  "license": "LGPL-2.0 WITH WxWindows-exception-3.1",
+  "bugs": {
+    "url": "https://github.com/cateyes/cateyes/issues"
+  },
+  "homepage": "https://github.com/cateyes/cateyes#readme",
+  "dependencies": {
+    "glob": "^7.1.2",
+    "lzma-native": "^3.0.5",
+    "pump": "^3.0.0",
+    "simple-get": "^2.7.0"
+  }
+}

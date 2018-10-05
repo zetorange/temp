@@ -1,0 +1,4 @@
+module CCateyes {
+    header "cateyes-core.h"
+    export *
+}

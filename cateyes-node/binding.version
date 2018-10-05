@@ -1,0 +1,4 @@
+CATEYES_BINDING {
+  local:
+    *;
+};

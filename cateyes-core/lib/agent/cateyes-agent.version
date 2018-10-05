@@ -1,0 +1,7 @@
+CATEYES_AGENT_1.0 {
+  global:
+    cateyes_agent_main;
+
+  local:
+    *;
+};

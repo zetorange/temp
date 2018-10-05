@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B7DC9B02-A5FF-4AA1-B2A2-DC1653168D44}</ProjectGuid>
+    <RootNamespace>cateyes</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)releng\cateyes-$(Configuration).props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)releng\cateyes-$(Configuration).props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)releng\cateyes-$(Configuration).props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)releng\cateyes-$(Configuration).props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)build\tmp-windows\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)build\tmp-windows\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)build\tmp-windows\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)build\tmp-windows\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>G_LOG_DOMAIN="Cateyes";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(IntDir)data;$(IntDir)..\cateyes-pipe-32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>$(IntDir)data\cateyes-data-winjector-blob.obj;$(IntDir)data\cateyes-data-agent-blob.obj;cateyes-pipe-32.lib;gum-32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(IntDir)..\cateyes-pipe-32;$(IntDir)..\gum-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>G_LOG_DOMAIN="Cateyes";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(IntDir)data;$(IntDir)..\cateyes-pipe-32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>$(IntDir)data\cateyes-data-winjector-blob.obj;$(IntDir)data\cateyes-data-agent-blob.obj;cateyes-pipe-32.lib;gum-32.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(IntDir)..\cateyes-pipe-32;$(IntDir)..\gum-32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>G_LOG_DOMAIN="Cateyes";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(IntDir)data;$(IntDir)..\cateyes-pipe-64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>$(IntDir)data\cateyes-data-winjector-blob.obj;$(IntDir)data\cateyes-data-agent-blob.obj;cateyes-pipe-64.lib;gum-64.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(IntDir)..\cateyes-pipe-64;$(IntDir)..\gum-64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>G_LOG_DOMAIN="Cateyes";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(IntDir)data;$(IntDir)..\cateyes-pipe-64;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>$(IntDir)data\cateyes-data-winjector-blob.obj;$(IntDir)data\cateyes-data-agent-blob.obj;cateyes-pipe-64.lib;gum-64.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(IntDir)..\cateyes-pipe-64;$(IntDir)..\gum-64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\agent.resources">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\Win32\dbghelp.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\x64\dbghelp.dll;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\Win32\dbghelp.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\x64\dbghelp.dll;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\Win32\dbghelp.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\x64\dbghelp.dll;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\Win32\dbghelp.dll;$(SolutionDir)cateyes-gum\ext\dbghelp\x64\dbghelp.dll;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Serializing Agent resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)data\agent.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Serializing Agent resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)data\agent.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Serializing Agent resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)data\agent.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Serializing Agent resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)data\agent.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\agent.resources" -o "$(IntDir)data\cateyes-data-agent" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-32.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-64.dll" || exit 1
+REM. &gt; "$(IntDir)data\agent.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\agent.resources" -o "$(IntDir)data\cateyes-data-agent" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-32.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-64.dll" || exit 1
+REM. &gt; "$(IntDir)data\agent.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\agent.resources" -o "$(IntDir)data\cateyes-data-agent" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-32.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-64.dll" || exit 1
+REM. &gt; "$(IntDir)data\agent.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\agent.resources" -o "$(IntDir)data\cateyes-data-agent" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\cateyes-agent-32\cateyes-agent-32.dll" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\cateyes-agent-64\cateyes-agent-64.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-32.dll" "$(SolutionDir)cateyes-gum\ext\dbghelp\dbghelp-64.dll" || exit 1
+REM. &gt; "$(IntDir)data\agent.stamp"
+</Command>
+    </CustomBuild>
+    <CustomBuild Include="src\windows\winjector.resources">
+      <FileType>Document</FileType>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe;$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe;$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Serializing Winjector resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)data\winjector.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Serializing Winjector resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)data\winjector.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Serializing Winjector resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)data\winjector.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Serializing Winjector resources</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)data\winjector.stamp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\windows\winjector.resources" -o "$(IntDir)data\cateyes-data-winjector" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe" || exit 1
+REM. &gt; "$(IntDir)data\winjector.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\windows\winjector.resources" -o "$(IntDir)data\cateyes-data-winjector" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe" || exit 1
+REM. &gt; "$(IntDir)data\winjector.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\windows\winjector.resources" -o "$(IntDir)data\cateyes-data-winjector" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe" || exit 1
+REM. &gt; "$(IntDir)data\winjector.stamp"
+</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+"$(IntDir)..\cateyes-resource-compiler\cateyes-resource-compiler.exe" -m $(PlatformTarget) -c "$(ProjectDir)src\windows\winjector.resources" -o "$(IntDir)data\cateyes-data-winjector" "$(SolutionDir)build\tmp-windows\Win32-$(ConfigurationName)\winjector-helper-32\winjector-helper-32.exe" "$(SolutionDir)build\tmp-windows\x64-$(ConfigurationName)\winjector-helper-64\winjector-helper-64.exe" || exit 1
+REM. &gt; "$(IntDir)data\winjector.stamp"
+</Command>
+    </CustomBuild>
+    <CustomBuild Include="src\cateyes.vala">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling vala code</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+mkdir "$(IntDir)src" 2&gt;NUL
+"$(ValaCompiler)" lib/interfaces/session.vala src/agent-container.vala src/cateyes.vala src/debugger.vala src/host-session-service.vala src/system.vala src/droidy/droidy-client.vala src/droidy/droidy-host-session.vala src/fruity/fruity-client.vala src/fruity/fruity-host-session.vala src/fruity/fruity-property-list.vala src/tcp/tcp-host-session.vala src/windows/windows-host-session.vala src/windows/winjector.vala src/windows/winjector-types.vala -D WINDOWS --ccode --directory=$(IntDir) --library=cateyes-core --header=$(IntDir)cateyes-core.h --symbols=$(IntDir)cateyes-core.symbols --vapidir="$(IntDir)..\cateyes-pipe-32" --vapidir="$(IntDir)..\cateyes-pipe-64" --vapidir="$(IntDir)data" $(ValaFlags) --pkg config --pkg=gmodule-2.0 --pkg=gio-2.0 --pkg=gee-0.8 --pkg=json-glib-1.0 --pkg=cateyes-gum-1.0 --pkg=cateyes-pipe --pkg=cateyes-data-agent --pkg=cateyes-data-winjector || exit 1
+mkdir "$(IntDir)api" 2&gt;NUL
+"$(ProjectDir)src\api\generate.py" 1.0 "$(ProjectDir)src\cateyes.vala" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)api"
+echo &gt; "$(IntDir)valacode.stamp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ValaCompiler);$(ProjectDir)lib\interfaces\session.vala;$(ProjectDir)src\agent-container.vala;$(ProjectDir)src\cateyes.vala;$(ProjectDir)src\debugger.vala;$(ProjectDir)src\host-session-service.vala;$(ProjectDir)src\system.vala;$(ProjectDir)src\droidy\droidy-client.vala;$(ProjectDir)src\droidy\droidy-host-session.vala;$(ProjectDir)src\fruity\fruity-client.vala;$(ProjectDir)src\fruity\fruity-host-session.vala;$(ProjectDir)src\fruity\fruity-property-list.vala;$(ProjectDir)src\tcp\tcp-host-session.vala;$(ProjectDir)src\windows\windows-host-session.vala;$(ProjectDir)src\windows\winjector.vala;$(ProjectDir)src\windows\winjector-types.vala;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)valacode.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compiling vala code</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+mkdir "$(IntDir)src" 2&gt;NUL
+"$(ValaCompiler)" lib/interfaces/session.vala src/agent-container.vala src/cateyes.vala src/debugger.vala src/host-session-service.vala src/system.vala src/droidy/droidy-client.vala src/droidy/droidy-host-session.vala src/fruity/fruity-client.vala src/fruity/fruity-host-session.vala src/fruity/fruity-property-list.vala src/tcp/tcp-host-session.vala src/windows/windows-host-session.vala src/windows/winjector.vala src/windows/winjector-types.vala -D WINDOWS --ccode --directory=$(IntDir) --library=cateyes-core --header=$(IntDir)cateyes-core.h --symbols=$(IntDir)cateyes-core.symbols --vapidir="$(IntDir)..\cateyes-pipe-32" --vapidir="$(IntDir)..\cateyes-pipe-64" --vapidir="$(IntDir)data" $(ValaFlags) --pkg config --pkg=gmodule-2.0 --pkg=gio-2.0 --pkg=gee-0.8 --pkg=json-glib-1.0 --pkg=cateyes-gum-1.0 --pkg=cateyes-pipe --pkg=cateyes-data-agent --pkg=cateyes-data-winjector || exit 1
+mkdir "$(IntDir)api" 2&gt;NUL
+"$(ProjectDir)src\api\generate.py" 1.0 "$(ProjectDir)src\cateyes.vala" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)api"
+echo &gt; "$(IntDir)valacode.stamp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ValaCompiler);$(ProjectDir)lib\interfaces\session.vala;$(ProjectDir)src\agent-container.vala;$(ProjectDir)src\cateyes.vala;$(ProjectDir)src\debugger.vala;$(ProjectDir)src\host-session-service.vala;$(ProjectDir)src\system.vala;$(ProjectDir)src\droidy\droidy-client.vala;$(ProjectDir)src\droidy\droidy-host-session.vala;$(ProjectDir)src\fruity\fruity-client.vala;$(ProjectDir)src\fruity\fruity-host-session.vala;$(ProjectDir)src\fruity\fruity-property-list.vala;$(ProjectDir)src\tcp\tcp-host-session.vala;$(ProjectDir)src\windows\windows-host-session.vala;$(ProjectDir)src\windows\winjector.vala;$(ProjectDir)src\windows\winjector-types.vala;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)valacode.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling vala code</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mkdir "$(IntDir)data" 2&gt;NUL
+mkdir "$(IntDir)src" 2&gt;NUL
+"$(ValaCompiler)" lib/interfaces/session.vala src/agent-container.vala src/cateyes.vala src/debugger.vala src/host-session-service.vala src/system.vala src/droidy/droidy-client.vala src/droidy/droidy-host-session.vala src/fruity/fruity-client.vala src/fruity/fruity-host-session.vala src/fruity/fruity-property-list.vala src/tcp/tcp-host-session.vala src/windows/windows-host-session.vala src/windows/winjector.vala src/windows/winjector-types.vala -D WINDOWS --ccode --directory=$(IntDir) --library=cateyes-core --header=$(IntDir)cateyes-core.h --symbols=$(IntDir)cateyes-core.symbols --vapidir="$(IntDir)..\cateyes-pipe-32" --vapidir="$(IntDir)..\cateyes-pipe-64" --vapidir="$(IntDir)data" $(ValaFlags) --pkg config --pkg=gmodule-2.0 --pkg=gio-2.0 --pkg=gee-0.8 --pkg=json-glib-1.0 --pkg=cateyes-gum-1.0 --pkg=cateyes-pipe --pkg=cateyes-data-agent --pkg=cateyes-data-winjector || exit 1
+mkdir "$(IntDir)api" 2&gt;NUL
+"$(ProjectDir)src\api\generate.py" 1.0 "$(ProjectDir)src\cateyes.vala" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)api"
+echo &gt; "$(IntDir)valacode.stamp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ValaCompiler);$(ProjectDir)lib\interfaces\session.vala;$(ProjectDir)src\agent-container.vala;$(ProjectDir)src\cateyes.vala;$(ProjectDir)src\debugger.vala;$(ProjectDir)src\host-session-service.vala;$(ProjectDir)src\system.vala;$(ProjectDir)src\droidy\droidy-client.vala;$(ProjectDir)src\droidy\droidy-host-session.vala;$(ProjectDir)src\fruity\fruity-client.vala;$(ProjectDir)src\fruity\fruity-host-session.vala;$(ProjectDir)src\fruity\fruity-property-list.vala;$(ProjectDir)src\tcp\tcp-host-session.vala;$(ProjectDir)src\windows\windows-host-session.vala;$(ProjectDir)src\windows\winjector.vala;$(ProjectDir)src\windows\winjector-types.vala;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)valacode.stamp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compiling vala code</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mkdir "$(IntDir)data" 2&gt;NUL
+mkdir "$(IntDir)src" 2&gt;NUL
+"$(ValaCompiler)" lib/interfaces/session.vala src/agent-container.vala src/cateyes.vala src/debugger.vala src/host-session-service.vala src/system.vala src/droidy/droidy-client.vala src/droidy/droidy-host-session.vala src/fruity/fruity-client.vala src/fruity/fruity-host-session.vala src/fruity/fruity-property-list.vala src/tcp/tcp-host-session.vala src/windows/windows-host-session.vala src/windows/winjector.vala src/windows/winjector-types.vala -D WINDOWS --ccode --directory=$(IntDir) --library=cateyes-core --header=$(IntDir)cateyes-core.h --symbols=$(IntDir)cateyes-core.symbols --vapidir="$(IntDir)..\cateyes-pipe-32" --vapidir="$(IntDir)..\cateyes-pipe-64" --vapidir="$(IntDir)data" $(ValaFlags) --pkg config --pkg=gmodule-2.0 --pkg=gio-2.0 --pkg=gee-0.8 --pkg=json-glib-1.0 --pkg=cateyes-gum-1.0 --pkg=cateyes-pipe --pkg=cateyes-data-agent --pkg=cateyes-data-winjector || exit 1
+mkdir "$(IntDir)api" 2&gt;NUL
+"$(ProjectDir)src\api\generate.py" 1.0 "$(ProjectDir)src\cateyes.vala" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)cateyes-core.vapi" "$(IntDir)cateyes-core.h" "$(IntDir)api"
+echo &gt; "$(IntDir)valacode.stamp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ValaCompiler);$(ProjectDir)lib\interfaces\session.vala;$(ProjectDir)src\agent-container.vala;$(ProjectDir)src\cateyes.vala;$(ProjectDir)src\debugger.vala;$(ProjectDir)src\host-session-service.vala;$(ProjectDir)src\system.vala;$(ProjectDir)src\droidy\droidy-client.vala;$(ProjectDir)src\droidy\droidy-host-session.vala;$(ProjectDir)src\fruity\fruity-client.vala;$(ProjectDir)src\fruity\fruity-host-session.vala;$(ProjectDir)src\fruity\fruity-property-list.vala;$(ProjectDir)src\tcp\tcp-host-session.vala;$(ProjectDir)src\windows\windows-host-session.vala;$(ProjectDir)src\windows\winjector.vala;$(ProjectDir)src\windows\winjector-types.vala;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)valacode.stamp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="src\debugger.vala" />
+    <None Include="src\host-session-service.vala" />
+    <None Include="src\agent-container.vala" />
+    <None Include="lib\interfaces\session.vala" />
+    <None Include="src\droidy\droidy-client.vala" />
+    <None Include="src\droidy\droidy-host-session.vala" />
+    <None Include="src\fruity\fruity-client.vala" />
+    <None Include="src\fruity\fruity-host-session.vala" />
+    <None Include="src\fruity\fruity-property-list.vala" />
+    <None Include="src\tcp\tcp-host-session.vala" />
+    <None Include="src\windows\windows-host-session.vala" />
+    <None Include="src\windows\winjector.vala" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(IntDir)lib\interfaces\session.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)lib\interfaces\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)lib\interfaces\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)lib\interfaces\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)lib\interfaces\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\cateyes.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\debugger.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\host-session-service.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\agent-container.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\system.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\droidy\droidy-client.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\droidy\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\droidy\droidy-host-session.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\droidy\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\droidy\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\fruity\fruity-client.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\fruity\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\fruity\fruity-host-session.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\fruity\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\fruity\fruity-property-list.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\fruity\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\tcp\tcp-host-session.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\tcp\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\tcp\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\tcp\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\tcp\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\windows\windows-host-session.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\windows\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\windows\winjector.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\windows\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)src\windows\winjector-types.c">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">TurnOffAllWarnings</WarningLevel>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">TurnOffAllWarnings</WarningLevel>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\windows\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)data\cateyes-data-agent.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)data\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="$(IntDir)data\cateyes-data-winjector.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)data\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)data\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\cateyes-glue.c" />
+    <ClCompile Include="src\fruity\fruity-host-session-windows.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\fruity\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\fruity\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\windows\access-helpers.c" />
+    <ClCompile Include="src\windows\system-windows.c" />
+    <ClCompile Include="src\windows\icon-helpers.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\windows\windows-host-session-glue.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\windows\</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\windows\winjector-glue.c">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)src\windows\</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)src\windows\</ObjectFileName>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="lib\agent\cateyes-agent-32.vcxproj">
+      <Project>{b111ba27-807a-4b16-a4de-a33d7d6d7ce1}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="lib\agent\cateyes-agent-64.vcxproj">
+      <Project>{3194ec55-c1e5-423d-820f-13d38409b9d0}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="src\windows\winjector-helper-32.vcxproj">
+      <Project>{e0ac03f2-f077-4ba7-88dd-bbe95b4e4ef0}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <ProjectReference Include="src\windows\winjector-helper-64.vcxproj">
+      <Project>{037e8466-f87b-486d-b6ad-fecb5740ce2c}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(IntDir)cateyes-core.h" />
+    <ClInclude Include="src\windows\access-helpers.h" />
+    <ClInclude Include="src\windows\icon-helpers.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

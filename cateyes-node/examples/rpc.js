@@ -1,0 +1,38 @@
+'use strict';
+
+const cateyes = require('..');
+
+const processName = process.argv[2];
+
+const source = `'use strict';
+
+rpc.exports = {
+  hello: function () {
+    return 'Hello';
+  },
+  failPlease: function () {
+    oops;
+  }
+};`;
+
+async function main() {
+  const session = await cateyes.attach(processName);
+
+  const script = await session.createScript(source);
+  await script.load();
+
+  try {
+    const api = script.exports;
+
+    console.log('[*] api.hello() =>', await api.hello());
+
+    await api.failPlease();
+  } finally {
+    await script.unload();
+  }
+}
+
+main()
+  .catch(e => {
+    console.error(e);
+  });

@@ -1,0 +1,19 @@
+building cateyes-tools
+make tools-64 PYTHON=/bin/python3 PYTHON3=/bin/python3
+
+building cateyes-core
+make build/cateyes-linux-mips/lib/pkgconfig/cateyes-gum-1.0.pc PYTHON=/bin/python3
+make build/cateyes-linux-mips/lib/pkgconfig/cateyes-core-1.0.pc PYTHON=/bin/python3
+
+
+cateyes-gum/bindings/gumjs - delete node_modules  -  npm install - namechange
+cateyes-gum/bindings/gumjs/node_modules/frida-fs
+cateyes-gum/bindings/gumjs/node_modules/frida-net
+cateyes-gum/bindings/gumjs/node_modules/frida-gum-types
+cateyes-gum/bindings/gumjs/node_modules/frida-gum-types/frida-gum
+cateyes-gum/bindings/gumjs/node_modules/frida-gum-types/frida-gum/frida-gum.d.ts
+cateyes-gum/bindings/gumjs/node_modules/frida-http
+cateyes-gum/bindings/gumjs/node_modules/frida-process
+cateyes-gum/bindings/gumjs/node_modules/frida-buffer
+cateyes-gum/bindings/gumjs/node_modules/.bin/frida-compile
+cateyes-gum/bindings/gumjs/node_modules/frida-any-promise

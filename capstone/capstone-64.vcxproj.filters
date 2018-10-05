@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="cs.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="MCInst.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="MCInstrDesc.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="MCRegisterInfo.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="SStream.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.c">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86ATTInstPrinter.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86Disassembler.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86DisassemblerDecoder.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86IntelInstPrinter.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86Mapping.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+    <ClCompile Include="arch\X86\X86Module.c">
+      <Filter>arch\X86</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cs_priv.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="LEB128.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MathExtras.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MCDisassembler.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MCFixedLenDisassembler.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MCInst.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MCInstrDesc.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="MCRegisterInfo.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="SStream.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\arm.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\arm64.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\capstone.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mips.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ppc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sparc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\systemz.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="arch\X86\X86Disassembler.h">
+      <Filter>arch\X86</Filter>
+    </ClInclude>
+    <ClInclude Include="arch\X86\X86DisassemblerDecoder.h">
+      <Filter>arch\X86</Filter>
+    </ClInclude>
+    <ClInclude Include="arch\X86\X86DisassemblerDecoderCommon.h">
+      <Filter>arch\X86</Filter>
+    </ClInclude>
+    <ClInclude Include="arch\X86\X86InstPrinter.h">
+      <Filter>arch\X86</Filter>
+    </ClInclude>
+    <ClInclude Include="arch\X86\X86Mapping.h">
+      <Filter>arch\X86</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{abeaff6f-01d2-485c-8726-be4ba69bf519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{c554ca91-65b7-44bb-bf76-ee709e343775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch">
+      <UniqueIdentifier>{06378b47-2fc9-44d4-8b82-25261fe18fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="arch\X86">
+      <UniqueIdentifier>{8b472177-217c-44c7-921a-f38788f8081a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="arch\X86\X86GenAsmWriter.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenAsmWriter_reduce.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenAsmWriter1.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenAsmWriter1_reduce.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenDisassemblerTables.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenDisassemblerTables_reduce.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenInstrInfo.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenInstrInfo_reduce.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+    <None Include="arch\X86\X86GenRegisterInfo.inc">
+      <Filter>arch\X86</Filter>
+    </None>
+  </ItemGroup>
+</Project>

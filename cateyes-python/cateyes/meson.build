@@ -1,0 +1,6 @@
+cateyes_sources = [
+  '__init__.py',
+  'core.py',
+]
+
+install_data(cateyes_sources, install_dir: join_paths(python_site_packages, 'cateyes'))

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>USE_SYS_DYN_MEM;CAPSTONE_HAS_X86;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4245;4310;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <ClInclude Include="include\arm.h" />
+    <ClInclude Include="include\arm64.h" />
+    <ClInclude Include="include\capstone.h" />
+    <ClInclude Include="include\mips.h" />
+    <ClInclude Include="include\ppc.h" />
+    <ClInclude Include="include\sparc.h" />
+    <ClInclude Include="include\systemz.h" />
+    <ClInclude Include="include\x86.h" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="cs_priv.h" />
+    <ClInclude Include="LEB128.h" />
+    <ClInclude Include="MathExtras.h" />
+    <ClInclude Include="MCDisassembler.h" />
+    <ClInclude Include="MCFixedLenDisassembler.h" />
+    <ClInclude Include="MCInst.h" />
+    <ClInclude Include="MCInstrDesc.h" />
+    <ClInclude Include="MCRegisterInfo.h" />
+    <ClInclude Include="SStream.h" />
+    <ClInclude Include="utils.h" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="cs.c" />
+    <ClCompile Include="MCInst.c" />
+    <ClCompile Include="MCInstrDesc.c" />
+    <ClCompile Include="MCRegisterInfo.c" />
+    <ClCompile Include="SStream.c" />
+    <ClCompile Include="utils.c" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClInclude Include="arch\X86\X86Disassembler.h" />
+    <ClInclude Include="arch\X86\X86DisassemblerDecoder.h" />
+    <ClInclude Include="arch\X86\X86DisassemblerDecoderCommon.h" />
+    <ClInclude Include="arch\X86\X86InstPrinter.h" />
+    <ClInclude Include="arch\X86\X86Mapping.h" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ClCompile Include="arch\X86\X86ATTInstPrinter.c" />
+    <ClCompile Include="arch\X86\X86Disassembler.c" />
+    <ClCompile Include="arch\X86\X86DisassemblerDecoder.c" />
+    <ClCompile Include="arch\X86\X86IntelInstPrinter.c" />
+    <ClCompile Include="arch\X86\X86Mapping.c" />
+    <ClCompile Include="arch\X86\X86Module.c" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="arch\X86\X86GenAsmWriter.inc" />
+    <None Include="arch\X86\X86GenAsmWriter1.inc" />
+    <None Include="arch\X86\X86GenAsmWriter1_reduce.inc" />
+    <None Include="arch\X86\X86GenAsmWriter_reduce.inc" />
+    <None Include="arch\X86\X86GenDisassemblerTables.inc" />
+    <None Include="arch\X86\X86GenDisassemblerTables_reduce.inc" />
+    <None Include="arch\X86\X86GenInstrInfo.inc" />
+    <None Include="arch\X86\X86GenInstrInfo_reduce.inc" />
+    <None Include="arch\X86\X86GenRegisterInfo.inc" />
+  </ItemGroup>
+
+</Project>

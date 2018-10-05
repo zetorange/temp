@@ -1,0 +1,129 @@
+# Hungarian translation for glib-openssl.
+# Copyright (C) 2011, 2012, 2018. Free Software Foundation, Inc.
+# This file is distributed under the same license as the glib-openssl package.
+#
+# Gabor Kelemen <kelemeng at gnome dot hu>, 2011, 2012.
+# Balázs Úr <urbalazs at gmail dot com>, 2012, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: glib-openssl master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=glib-"
+"openssl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2017-10-26 10:52+0000\n"
+"PO-Revision-Date: 2018-01-27 10:11+0100\n"
+"Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
+"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: tls/base/gtlsconnection-base.c:282
+msgid "Connection is closed"
+msgstr "A kapcsolat lezárva"
+
+#: tls/base/gtlsconnection-base.c:355 tls/base/gtlsconnection-base.c:1015
+msgid "Operation would block"
+msgstr "A művelet blokkoló lenne"
+
+#: tls/base/gtlsconnection-base.c:809
+msgid "Server required TLS certificate"
+msgstr "A kiszolgáló TLS-tanúsítványt kért"
+
+#: tls/openssl/gtlscertificate-openssl.c:179
+#, c-format
+msgid "Could not parse DER certificate: %s"
+msgstr "A DER tanúsítvány nem dolgozható fel: %s"
+
+#: tls/openssl/gtlscertificate-openssl.c:199
+#, c-format
+msgid "Could not parse PEM certificate: %s"
+msgstr "A PEM tanúsítvány nem dolgozható fel: %s"
+
+#: tls/openssl/gtlscertificate-openssl.c:218
+#, c-format
+msgid "Could not parse DER private key: %s"
+msgstr "A DER személyes kulcs nem dolgozható fel: %s"
+
+#: tls/openssl/gtlscertificate-openssl.c:237
+#, c-format
+msgid "Could not parse PEM private key: %s"
+msgstr "A PEM személyes kulcs nem dolgozható fel: %s"
+
+#: tls/openssl/gtlscertificate-openssl.c:275
+msgid "No certificate data provided"
+msgstr "Nincsenek megadva tanúsítványadatok"
+
+#: tls/openssl/gtlsclientconnection-openssl.c:452
+#: tls/openssl/gtlsserverconnection-openssl.c:257
+#, c-format
+msgid "Could not create TLS context: %s"
+msgstr "Nem sikerült létrehozni TLS-környezetet: %s"
+
+#: tls/openssl/gtlsclientconnection-openssl.c:492
+#: tls/openssl/gtlsserverconnection-openssl.c:343
+#, c-format
+msgid "Could not create TLS connection: %s"
+msgstr "Nem sikerült létrehozni TLS-kapcsolatot: %s"
+
+#: tls/openssl/gtlsconnection-openssl.c:150
+msgid "Peer failed to perform TLS handshake"
+msgstr "A partner nem tudta végrehajtani a TLS-kézfogást"
+
+#: tls/openssl/gtlsconnection-openssl.c:171
+msgid "TLS connection peer did not send a certificate"
+msgstr "A TLS kapcsolat partner nem küldött tanúsítványt"
+
+#: tls/openssl/gtlsconnection-openssl.c:179
+msgid "Digest too big for RSA key"
+msgstr "A kivonat túl nagy az RSA kulcshoz"
+
+#: tls/openssl/gtlsconnection-openssl.c:232
+msgid "Peer requested illegal TLS rehandshake"
+msgstr "A partner illegális ismételt TLS-kézfogást kért"
+
+#: tls/openssl/gtlsconnection-openssl.c:241
+#: tls/openssl/gtlsconnection-openssl.c:337
+#, c-format
+msgid "Error performing TLS handshake: %s"
+msgstr "Hiba a TLS-kézfogás végrehajtásakor: %s"
+
+#: tls/openssl/gtlsconnection-openssl.c:347
+msgid "Server did not return a valid TLS certificate"
+msgstr "A kiszolgáló nem adott vissza érvényes TLS-tanúsítványt"
+
+#: tls/openssl/gtlsconnection-openssl.c:377
+msgid "Unacceptable TLS certificate"
+msgstr "Elfogadhatatlan TLS-tanúsítvány"
+
+#: tls/openssl/gtlsconnection-openssl.c:461
+#, c-format
+msgid "Error reading data from TLS socket: %s"
+msgstr "Hiba az adatok olvasásakor a TLS-foglalatból: %s"
+
+#: tls/openssl/gtlsconnection-openssl.c:487
+#, c-format
+msgid "Error writing data to TLS socket: %s"
+msgstr "Hiba az adatok TLS-foglalatba írásakor: %s"
+
+#: tls/openssl/gtlsconnection-openssl.c:513
+#, c-format
+msgid "Error performing TLS close: %s"
+msgstr "Hiba a TLS-lezárás végrehajtásakor: %s"
+
+#: tls/openssl/gtlsserverconnection-openssl.c:286
+msgid "Certificate has no private key"
+msgstr "A tanúsítványnak nincs titkos kulcsa"
+
+#: tls/openssl/gtlsserverconnection-openssl.c:293
+#, c-format
+msgid "There is a problem with the certificate private key: %s"
+msgstr "Probléma van a tanúsítvány titkos kulcsával: %s"
+
+#: tls/openssl/gtlsserverconnection-openssl.c:302
+#, c-format
+msgid "There is a problem with the certificate: %s"
+msgstr "Probléma van a tanúsítvánnyal: %s"
+
